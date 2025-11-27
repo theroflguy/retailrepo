@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipes - Grocery Retailer X</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      font-family: 'Roboto', Arial, sans-serif; 
+      background: #f5f5f5;
+      margin: 0;
+      min-height: 100vh;
+    }
+    header { background: #fff; color: #333; padding: 1.5rem 2rem 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    header h1 { margin: 0; font-size: 2.3em; font-weight: 700; letter-spacing:-1px; color: #1a5f59;}
+    nav { display: flex; gap: 2rem; margin:1.5rem 0 0.5rem 0;font-size:1.08em;}
+    nav a { color: #333; text-decoration:none; font-weight:500; cursor: pointer;}
+    nav a:hover {color: #e84342; text-decoration:underline;}
+    .main { max-width:1100px; margin:0 auto; padding:2em;}
+    .recipes-hero { background: linear-gradient(135deg, #d4a574 0%, #f4d4c1 100%); padding: 3em 2em; border-radius: 1em; text-align: center; margin-bottom: 2em; }
+    .recipes-hero h2 { margin: 0; font-size: 2.5em; color: #3d2817; }
+    .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2em; }
+    .recipe-card { background: #fff; border-radius: 1em; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.07); cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
+    .recipe-card:hover { transform: translateY(-8px); box-shadow: 0 8px 16px rgba(0,0,0,0.12); }
+    .recipe-img { width: 100%; height: 220px; object-fit: cover; }
+    .recipe-content { padding: 1.5em; }
+    .recipe-title { font-size: 1.3em; font-weight: 700; color: #1a5f59; margin: 0 0 0.5em 0; }
+    .recipe-meta { display: flex; gap: 1.5em; color: #666; margin: 0.5em 0 1em 0; font-size: 0.95em; }
+    .recipe-description { color: #555; margin: 1em 0; line-height: 1.6; }
+    .cta { background:#e84342; color:#fff; border:none; padding:0.7em 1.5em; border-radius:0.5em; font-size:1em; cursor:pointer; font-weight: 600; }
+    .cta:hover { background: #d63838; }
+    .recipe-detail { max-width: 800px; margin: 2em auto; background: #fff; padding: 2em; border-radius: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.07); display: none; }
+    .recipe-detail.active { display: block; }
+    .recipe-detail img { width: 100%; max-height: 400px; object-fit: cover; border-radius: 1em; margin-bottom: 1.5em; }
+    .ingredients { background: #f0f8f4; padding: 1.5em; border-radius: 1em; margin: 1.5em 0; }
+    .instructions { background: #fff9e6; padding: 1.5em; border-radius: 1em; margin: 1.5em 0; }
+    .close-btn { background: #ddd; color: #333; border: none; padding: 0.5em 1em; border-radius: 0.5em; cursor: pointer; float: right; }
+    .footer { text-align:center; color:#888; background:#fff; padding:2em 0 1em 0; font-size:1em; margin-top:3em; border-top: 1px solid #eee;}
+    a { text-decoration: none; color: inherit; }
+    @media (max-width:900px){.recipe-grid{grid-template-columns: 1fr;}.main{padding:1em;}}
+  </style>
+</head>
+<body>
+<header>
+  <h1>🛒 Grocery Retailer X</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="loyalty.html">X-Plus Loyalty</a>
+    <a href="recipes.html">Recipes</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+</header>
+
+<div class="main">
+  <div class="recipes-hero">
+    <h2>🍳 Featured Recipes</h2>
+    <p style="font-size: 1.1em; margin: 0; color: #3d2817;">Delicious meals made easy with ingredients from our store</p>
+  </div>
+
+  <div class="recipe-grid" id="recipeGrid">
+    <!-- Recipes will be generated here -->
+  </div>
+</div>
+
+<!-- Recipe Detail Modal -->
+<div class="recipe-detail" id="recipeDetail">
+  <button class="close-btn" onclick="closeRecipe()">✕ Close</button>
+  <img id="detailImg" src="" alt="">
+  <h2 id="detailTitle" style="color: #1a5f59; clear: both;"></h2>
+  
+  <div class="ingredients">
+    <h3 style="color: #2d9c9c; margin-top: 0;">📋 Ingredients</h3>
+    <ul id="detailIngredients"></ul>
+  </div>
+
+  <div class="instructions">
+    <h3 style="color: #d4a574; margin-top: 0;">👨‍🍳 Instructions</h3>
+    <ol id="detailInstructions"></ol>
+  </div>
+
+  <button class="cta" onclick="addIngredientsToCart()">Add Ingredients to Cart</button>
+</div>
+
+<div class="footer">
+  &copy; 2025 Grocery Retailer X | Your trusted online grocery store<br>
+  <small>Contact: support@groceryretailerx.com | 1-800-GROCERY</small>
+</div>
+
+<script>
+  const recipes = [
+    {
+      id: 1,
+      title: 'Cilantro Chicken',
+      prep: '20 min',
+      serves: 2,
+      difficulty: 'Easy',
+      image: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&w=400&q=80',
+      description: 'Juicy herb-marinated chicken with fresh cilantro sauce',
+      ingredients: [
+        'Chicken Breast (2 fillets)',
+        'Fresh Cilantro (1 bunch)',
+        'Lime (2)',
+        'Garlic (3 cloves)',
+        'Olive Oil',
+        'Salt & Pepper'
+      ],
+      instructions: [
+        'Marinate chicken in cilantro, lime juice, and garlic for 30 minutes',
+        'Heat olive oil in a pan over medium-high heat',
+        'Cook chicken for 6-7 minutes per side until golden',
+        'Let rest for 5 minutes before serving',
+        'Serve with lime wedges and fresh cilantro garnish'
+      ]
+    },
+    {
+      id: 2,
+      title: 'Veggie Power Bowl',
+      prep: '15 min',
+      serves: 1,
+      difficulty: 'Very Easy',
+      image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
+      description: 'Nutritious & colorful grain bowl packed with fresh vegetables',
+      ingredients: [
+        'Quinoa (1 cup cooked)',
+        'Broccoli (1 cup)',
+        'Carrots (1 shredded)',
+        'Cherry Tomatoes (1 cup)',
+        'Chickpeas (1 can)',
+        'Tahini Dressing (3 tbsp)',
+        'Spinach (2 cups)'
+      ],
+      instructions: [
+        'Cook quinoa according to package directions',
+        'Steam broccoli until tender-crisp (5 minutes)',
+        'Arrange quinoa as base in a large bowl',
+        'Add broccoli, carrots, tomatoes, and chickpeas',
+        'Top with fresh spinach and tahini dressing',
+        'Toss gently and serve immediately'
+      ]
+    },
+    {
+      id: 3,
+      title: 'Baked Citrus Salmon',
+      prep: '25 min',
+      serves: 2,
+      difficulty: 'Easy',
+      image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80',
+      image: 'https://images.unsplash.com/photo-1464306076886-debede5e2f32?auto=format&fit=crop&w=800&q=80',
+      ingredients: [
+        'Salmon Fillets (2 x 150g)',
+        'Lemon (1)',
+        'Orange (1)',
+        'Fresh Dill (2 tbsp)',
+        'Olive Oil (2 tbsp)',
+        'Salt & Pepper',
+        'Asparagus (250g)'
+      ],
+      instructions: [
+        'Preheat oven to 200°C',
+        'Place salmon on parchment paper, season with salt & pepper',
+        'Slice citrus and layer on top with fresh dill',
+        'Drizzle with olive oil and bake for 15-18 minutes',
+        'Roast asparagus separately for 12-15 minutes',
+        'Serve salmon and asparagus together'
+      ]
+    },
+    {
+      id: 4,
+      title: 'Pasta Primavera',
+      prep: '20 min',
+      serves: 2,
+      difficulty: 'Easy',
+      image: 'https://images.unsplash.com/photo-1621996346565-431f63602f41?auto=format&fit=crop&w=400&q=80',
+      description: 'Light and fresh pasta with seasonal vegetables',
+      ingredients: [
+        'Pasta (250g)',
+        'Zucchini (1)',
+        'Bell Pepper (1)',
+        'Cherry Tomatoes (1 cup)',
+        'Garlic (2 cloves)',
+        'Olive Oil (3 tbsp)',
+        'Parmesan (50g)',
+        'Fresh Basil'
+      ],
+      instructions: [
+        'Cook pasta according to package directions, drain',
+        'Heat olive oil and sauté garlic until fragrant',
+        'Add sliced zucchini and bell pepper, cook 5 minutes',
+        'Add tomatoes and cook until softened (3 minutes)',
+        'Toss pasta with vegetables, top with parmesan',
+        'Garnish with fresh basil and serve'
+      ]
+    },
+    {
+      id: 5,
+      title: 'Berry Smoothie Bowl',
+      prep: '10 min',
+      serves: 1,
+      difficulty: 'Very Easy',
+      image: 'https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=400&q=80',
+      description: 'Breakfast favorite loaded with antioxidants',
+      ingredients: [
+        'Mixed Berries (1.5 cups frozen)',
+        'Yogurt (1 cup)',
+        'Milk (1/2 cup)',
+        'Granola (1/4 cup)',
+        'Honey (2 tbsp)',
+        'Coconut Flakes (2 tbsp)',
+        'Fresh Berries (1/4 cup)'
+      ],
+      instructions: [
+        'Blend frozen berries, yogurt, and milk until smooth',
+        'Pour into a bowl',
+        'Top with granola, coconut flakes, and fresh berries',
+        'Drizzle with honey',
+        'Serve immediately with a spoon'
+      ]
+    },
+    {
+      id: 6,
+      title: 'Stir Fry Vegetables',
+      prep: '15 min',
+      serves: 2,
+      difficulty: 'Easy',
+      image: 'https://images.unsplash.com/photo-1609501676725-7186f017a4b0?auto=format&fit=crop&w=400&q=80',
+      description: 'Quick and colorful stir fry with Asian flavors',
+      ingredients: [
+        'Mixed Vegetables (3 cups)',
+        'Soy Sauce (3 tbsp)',
+        'Garlic (3 cloves)',
+        'Ginger (1 tbsp)',
+        'Sesame Oil (1 tbsp)',
+        'Vegetable Oil (2 tbsp)',
+        'Sesame Seeds (1 tbsp)',
+        'Rice (cooked, 2 cups)'
+      ],
+      instructions: [
+        'Heat vegetable oil in a wok over high heat',
+        'Add garlic and ginger, stir for 30 seconds',
+        'Add vegetables and stir-fry for 5-7 minutes',
+        'Add soy sauce and sesame oil, mix well',
+        'Sprinkle with sesame seeds',
+        'Serve over cooked rice'
+      ]
+    }
+  ];
+
+  let currentRecipe = null;
+
+  function renderRecipes() {
+    const grid = document.getElementById('recipeGrid');
+    grid.innerHTML = '';
+    recipes.forEach(recipe => {
+      const card = document.createElement('div');
+      card.className = 'recipe-card';
+      card.onclick = () => showRecipe(recipe.id);
+      card.innerHTML = `
+        <img src="${recipe.image}" alt="${recipe.title}" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title">${recipe.title}</h3>
+          <div class="recipe-meta">
+            <span>⏱️ ${recipe.prep}</span>
+            <span>👥 Serves ${recipe.serves}</span>
+            <span>${recipe.difficulty}</span>
+          </div>
+          <p class="recipe-description">${recipe.description}</p>
+          <button class="cta" onclick="event.stopPropagation(); showRecipe(${recipe.id})">View Recipe</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function showRecipe(id) {
+    currentRecipe = recipes.find(r => r.id === id);
+    if (!currentRecipe) return;
+
+    document.getElementById('detailImg').src = currentRecipe.image;
+    document.getElementById('detailTitle').textContent = currentRecipe.title;
+    
+    const ingredientsList = document.getElementById('detailIngredients');
+    ingredientsList.innerHTML = '';
+    currentRecipe.ingredients.forEach(ing => {
+      const li = document.createElement('li');
+      li.textContent = ing;
+      ingredientsList.appendChild(li);
+    });
+
+    const instructionsList = document.getElementById('detailInstructions');
+    instructionsList.innerHTML = '';
+    currentRecipe.instructions.forEach(inst => {
+      const li = document.createElement('li');
+      li.textContent = inst;
+      instructionsList.appendChild(li);
+    });
+
+    document.getElementById('recipeDetail').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function closeRecipe() {
+    document.getElementById('recipeDetail').classList.remove('active');
+    currentRecipe = null;
+  }
+
+  function addIngredientsToCart() {
+    if (currentRecipe) {
+      alert(`✅ All ingredients for "${currentRecipe.title}" added to cart!\n\nYou can now proceed to checkout.`);
+    }
+  }
+
+  renderRecipes();
+</script>
+</body>
+</html>

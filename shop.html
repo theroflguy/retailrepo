@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop - Grocery Retailer X</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      font-family: 'Roboto', Arial, sans-serif; 
+      background: #f5f5f5;
+      margin: 0;
+      min-height: 100vh;
+    }
+    header { background: #fff; color: #333; padding: 1.5rem 2rem 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    header h1 { margin: 0; font-size: 2.3em; font-weight: 700; letter-spacing:-1px; color: #1a5f59;}
+    nav { display: flex; gap: 2rem; margin:1.5rem 0 0.5rem 0;font-size:1.08em;}
+    nav a { color: #333; text-decoration:none; font-weight:500; cursor: pointer;}
+    nav a:hover {color: #e84342; text-decoration:underline;}
+    .main { max-width:1200px; margin:0 auto; padding:2em; display: flex; gap: 2em;}
+    .sidebar { width: 200px; background: #fff; padding: 1.5em; border-radius: 0.8em; box-shadow: 0 2px 8px rgba(0,0,0,0.07); height: fit-content; }
+    .sidebar h3 { color: #1a5f59; margin-top: 0; }
+    .sidebar-item { padding: 0.8em 0; cursor: pointer; color: #333; border-bottom: 1px solid #eee; }
+    .sidebar-item:hover { color: #e84342; font-weight: 600; }
+    .content { flex: 1; }
+    .filters { background: #fff; padding: 1.5em; border-radius: 0.8em; margin-bottom: 2em; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+    .filters input { padding: 0.7em; width: 100%; border: 1px solid #ddd; border-radius: 0.5em; font-size: 1em; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5em; }
+    .product { background: #fff; border-radius: 0.8em; box-shadow: 0 2px 8px rgba(0,0,0,0.07); overflow: hidden; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
+    .product:hover { transform: translateY(-8px); box-shadow: 0 8px 16px rgba(0,0,0,0.12); }
+    .product-img { width: 100%; height: 200px; object-fit: cover; }
+    .product-info { padding: 1.2em; }
+    .product-title { font-weight: 600; color: #188187; margin: 0 0 0.5em 0; }
+    .product-price { font-size: 1.3em; color: #e84342; font-weight: 700; margin: 0.5em 0; }
+    .product-rating { color: #ffa500; margin: 0.5em 0; }
+    .cta { background:#e84342; color:#fff; border:none; padding:0.7em 1.5em; border-radius:0.5em; font-size:1em; cursor:pointer; font-weight: 600; width: 100%; }
+    .cta:hover { background: #d63838; }
+    .footer { text-align:center; color:#888; background:#fff; padding:2em 0 1em 0; font-size:1em; margin-top:3em; border-top: 1px solid #eee;}
+    a { text-decoration: none; color: inherit; }
+    @media (max-width:900px){.main{flex-direction: column; gap: 1em;}.sidebar{width: 100%;}.products-grid{grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));}}
+  </style>
+</head>
+<body>
+<header>
+  <h1>🛒 Grocery Retailer X</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="loyalty.html">X-Plus Loyalty</a>
+    <a href="recipes.html">Recipes</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+</header>
+
+<div class="main">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h3>Categories</h3>
+    <div class="sidebar-item" onclick="filterProducts('all')">All Products</div>
+    <div class="sidebar-item" onclick="filterProducts('fresh')">Fresh Produce</div>
+    <div class="sidebar-item" onclick="filterProducts('dairy')">Dairy & Eggs</div>
+    <div class="sidebar-item" onclick="filterProducts('branded')">Store Brands</div>
+    <div class="sidebar-item" onclick="filterProducts('offers')">Special Offers</div>
+    
+    <h3 style="margin-top: 2em;">Price Range</h3>
+    <div class="sidebar-item" onclick="filterByPrice('all')">All Prices</div>
+    <div class="sidebar-item" onclick="filterByPrice('budget')">Under £5</div>
+    <div class="sidebar-item" onclick="filterByPrice('mid')">£5 - £15</div>
+    <div class="sidebar-item" onclick="filterByPrice('premium')">£15+</div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="filters">
+      <input type="text" id="searchBox" placeholder="Search products..." onkeyup="searchProducts()">
+    </div>
+
+    <h2 style="color: #1a5f59; margin-top: 0;">Our Products</h2>
+    <div class="products-grid" id="productsGrid">
+      <!-- Products will be generated here -->
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  &copy; 2025 Grocery Retailer X | Your trusted online grocery store<br>
+  <small>Contact: support@groceryretailerx.com | 1-800-GROCERY</small>
+</div>
+
+<script>
+  const products = [
+  { id: 1, name: 'Banana (1kg)', price: 2.00, category: 'fresh', image: 'https://images.unsplash.com/photo-1574226516831-e1dff420e8f8?auto=format&fit=crop&w=400&q=80', rating: 4.5 },
+  { id: 2, name: 'Broccoli (500g)', price: 1.50, category: 'fresh', image: 'https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=400&q=80', rating: 4.3 },
+  { id: 3, name: 'Carrots (1kg)', price: 2.20, category: 'fresh', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80', rating: 4.6 },
+  { id: 4, name: 'Tomatoes (6pc)', price: 3.50, category: 'fresh', image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80', rating: 4.4 },
+  { id: 5, name: 'Milk (2L)', price: 2.00, category: 'dairy', image: 'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80', rating: 4.7 },
+  { id: 6, name: 'Yogurt (500g)', price: 2.50, category: 'dairy', image: 'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80', rating: 4.5 },
+  { id: 7, name: 'Cheese (200g)', price: 4.20, category: 'dairy', image: 'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80', rating: 4.6 },
+  { id: 8, name: 'Butter (200g)', price: 3.80, category: 'dairy', image: 'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80', rating: 4.5 },
+  { id: 9, name: 'Whole Wheat Bread', price: 1.80, category: 'branded', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=400&q=80', rating: 4.4 },
+  { id: 10, name: 'Store Brand Pasta', price: 1.20, category: 'branded', image: 'https://images.unsplash.com/photo-1523987355523-c7b5b0723c6a?auto=format&fit=crop&w=400&q=80', rating: 4.3 },
+  { id: 11, name: 'Rice (2kg)', price: 4.50, category: 'branded', image: 'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80', rating: 4.5 },
+  { id: 12, name: 'Cereal Box', price: 3.20, category: 'branded', image: 'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80', rating: 4.4 },
+    { id: 13, name: 'Special Bundle Deal', price: 12.99, category: 'offers', image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=200&q=80', rating: 4.8 },
+    { id: 14, name: 'Organic Mix Pack', price: 9.99, category: 'offers', image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=200&q=80', rating: 4.7 },
+  ];
+
+  let filteredProducts = products;
+
+  function renderProducts() {
+    const grid = document.getElementById('productsGrid');
+    grid.innerHTML = '';
+    filteredProducts.forEach(product => {
+      const productEl = document.createElement('div');
+      productEl.className = 'product';
+      productEl.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" class="product-img">
+        <div class="product-info">
+          <h3 class="product-title">${product.name}</h3>
+          <div class="product-price">£${product.price.toFixed(2)}</div>
+          <div class="product-rating">⭐ ${product.rating}</div>
+          <button class="cta" onclick="addToCart('${product.name}')">Add to Cart</button>
+        </div>
+      `;
+      grid.appendChild(productEl);
+    });
+  }
+
+  function filterProducts(category) {
+    if (category === 'all') {
+      filteredProducts = products;
+    } else {
+      filteredProducts = products.filter(p => p.category === category);
+    }
+    renderProducts();
+  }
+
+  function filterByPrice(range) {
+    if (range === 'all') {
+      filteredProducts = products;
+    } else if (range === 'budget') {
+      filteredProducts = products.filter(p => p.price < 5);
+    } else if (range === 'mid') {
+      filteredProducts = products.filter(p => p.price >= 5 && p.price < 15);
+    } else if (range === 'premium') {
+      filteredProducts = products.filter(p => p.price >= 15);
+    }
+    renderProducts();
+  }
+
+  function searchProducts() {
+    const query = document.getElementById('searchBox').value.toLowerCase();
+    filteredProducts = products.filter(p => p.name.toLowerCase().includes(query));
+    renderProducts();
+  }
+
+  function addToCart(productName) {
+    alert(`✅ "${productName}" added to cart!`);
+  }
+
+  // Initial render
+  renderProducts();
+</script>
+</body>
+</html>

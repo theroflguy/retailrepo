@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>X-Plus Loyalty - Grocery Retailer X</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      font-family: 'Roboto', Arial, sans-serif; 
+      background: #f5f5f5;
+      margin: 0;
+      min-height: 100vh;
+    }
+    header { background: #fff; color: #333; padding: 1.5rem 2rem 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    header h1 { margin: 0; font-size: 2.3em; font-weight: 700; letter-spacing:-1px; color: #1a5f59;}
+    nav { display: flex; gap: 2rem; margin:1.5rem 0 0.5rem 0;font-size:1.08em;}
+    nav a { color: #333; text-decoration:none; font-weight:500; cursor: pointer;}
+    nav a:hover {color: #e84342; text-decoration:underline;}
+    .main { max-width:1100px; margin:0 auto; padding:2em;}
+    .loyalty-hero { background: linear-gradient(135deg, #1a5f59 0%, #2d9c9c 100%); color: #fff; padding: 3em 2em; border-radius: 1em; text-align: center; margin-bottom: 2em; }
+    .loyalty-hero h2 { margin: 0; font-size: 2.5em; }
+    .card-container { background: #fff; border-radius: 1.5em; box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 2.5em; max-width: 500px; margin: 2em auto; text-align: center; border: 3px solid #e84342; }
+    .card-number { font-size: 2em; letter-spacing: 2px; color: #1a5f59; font-weight: 700; margin: 1em 0; font-family: 'Courier New', monospace; }
+    .points { font-size: 3em; color: #e84342; font-weight: 700; margin: 0.5em 0; }
+    .benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; margin: 3em auto; max-width: 1000px; }
+    .benefit { background: #fff; padding: 2em; border-radius: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.07); text-align: center; }
+    .benefit-icon { font-size: 3em; margin-bottom: 0.5em; }
+    .benefit h3 { color: #1a5f59; }
+    .cta { background:#e84342; color:#fff; border:none; padding:0.8em 2em; border-radius:0.8em; font-size:1.1em; cursor:pointer; font-weight: 600; }
+    .cta:hover { background: #d63838; }
+    .tier-section { max-width: 1000px; margin: 3em auto; }
+    .tier { background: #fff; padding: 2em; margin: 1em 0; border-radius: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.07); }
+    .tier-title { color: #e84342; font-size: 1.5em; font-weight: 700; }
+    .footer { text-align:center; color:#888; background:#fff; padding:2em 0 1em 0; font-size:1em; margin-top:3em; border-top: 1px solid #eee;}
+    a { text-decoration: none; color: inherit; }
+    @media (max-width:900px){.benefits{grid-template-columns: 1fr;}.main{padding:1em;}}
+  </style>
+</head>
+<body>
+<header>
+  <h1>🛒 Grocery Retailer X</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="loyalty.html">X-Plus Loyalty</a>
+    <a href="recipes.html">Recipes</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+</header>
+
+<div class="main">
+  <div class="loyalty-hero">
+    <h2>X-Plus Loyalty Program</h2>
+    <p style="font-size: 1.2em; margin: 1em 0;">Save more. Earn more. Live better.</p>
+  </div>
+
+  <!-- Loyalty Card -->
+  <div class="card-container">
+    <h3 style="color: #1a5f59; margin-top: 0;">Your Loyalty Card</h3>
+    <div style="background: #f0f0f0; padding: 2em; border-radius: 1em; margin: 1.5em 0;">
+      <p style="color: #666; margin: 0;">MEMBER CARD</p>
+      <div class="card-number">1234 5678 9101</div>
+      <p style="margin: 0; color: #888;">Valid through 12/2026</p>
+    </div>
+    <div style="margin: 2em 0;">
+      <p style="color: #666;">Your Points Balance</p>
+      <div class="points">8,250</div>
+      <p style="color: #999; margin: 0;">Redeem points for rewards!</p>
+    </div>
+    <button class="cta">Join Now / Activate Card</button>
+  </div>
+
+  <!-- Benefits -->
+  <h2 style="text-align: center; color: #1a5f59; margin-top: 3em;">Member Benefits</h2>
+  <div class="benefits">
+    <div class="benefit">
+      <div class="benefit-icon">🚚</div>
+      <h3>Free Delivery</h3>
+      <p>Unlimited free delivery on all orders over £20</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">⭐</div>
+      <h3>Double Points</h3>
+      <p>2x points on store brands & member exclusive items</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">💰</div>
+      <h3>Price Match</h3>
+      <p>Guaranteed lowest price on essential items</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">🎁</div>
+      <h3>Exclusive Deals</h3>
+      <p>Early access to sales & personalized coupons</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">🍽️</div>
+      <h3>Recipe Rewards</h3>
+      <p>Get ingredient bundles at special member prices</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">🎉</div>
+      <h3>Birthday Bonus</h3>
+      <p>500 bonus points during your birthday month</p>
+    </div>
+  </div>
+
+  <!-- Tiers -->
+  <h2 style="text-align: center; color: #1a5f59; margin-top: 3em;">Loyalty Tiers</h2>
+  <div class="tier-section">
+    <div class="tier">
+      <div class="tier-title">🥉 Silver Tier</div>
+      <p><b>Points per £:</b> 1 point per £1 spent</p>
+      <p><b>Min Spend:</b> No minimum</p>
+      <p><b>Perks:</b> Basic points, birthday bonus, early sale access</p>
+    </div>
+    <div class="tier">
+      <div class="tier-title">🥈 Gold Tier</div>
+      <p><b>Points per £:</b> 1.25 points per £1 spent</p>
+      <p><b>Min Spend:</b> £500 annually</p>
+      <p><b>Perks:</b> Silver perks + 5% discount + VIP customer service</p>
+    </div>
+    <div class="tier">
+      <div class="tier-title">🥇 Platinum Tier</div>
+      <p><b>Points per £:</b> 1.5 points per £1 spent</p>
+      <p><b>Min Spend:</b> £1200 annually</p>
+      <p><b>Perks:</b> Gold perks + 10% discount + exclusive product access + free shipping always</p>
+    </div>
+  </div>
+
+  <!-- How to Earn Points -->
+  <div class="tier-section" style="background: #fff; padding: 2em; border-radius: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.07);">
+    <h3 style="color: #1a5f59;">How to Earn Points</h3>
+    <ul style="font-size: 1.1em; line-height: 2;">
+      <li>✅ Shop online or in-store with your card</li>
+      <li>✅ Earn double points on store brand products</li>
+      <li>✅ Get bonus points during member-only sales</li>
+      <li>✅ Refer a friend and get 500 bonus points</li>
+      <li>✅ Birthday month gets 500 automatic points</li>
+      <li>✅ Complete special challenges for extra rewards</li>
+    </ul>
+  </div>
+
+  <!-- How to Redeem -->
+  <div class="tier-section" style="background: #fff; padding: 2em; border-radius: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.07);">
+    <h3 style="color: #1a5f59;">How to Redeem Points</h3>
+    <ul style="font-size: 1.1em; line-height: 2;">
+      <li>💳 100 points = £1 off your purchase</li>
+      <li>🎁 250 points = £3 gift card</li>
+      <li>🏆 500 points = £7 off next order</li>
+      <li>💎 1000 points = £15 off + free delivery</li>
+      <li>🌟 Exclusive items available only to members</li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">
+  &copy; 2025 Grocery Retailer X | Your trusted online grocery store<br>
+  <small>Contact: support@groceryretailerx.com | 1-800-GROCERY</small>
+</div>
+</body>
+</html>

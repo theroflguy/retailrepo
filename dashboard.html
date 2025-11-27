@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Grocery Retailer X</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      font-family: 'Roboto', Arial, sans-serif; 
+      background: #f5f5f5;
+      margin: 0;
+      min-height: 100vh;
+    }
+    header { background: #fff; color: #333; padding: 1.5rem 2rem 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    header h1 { margin: 0; font-size: 2.3em; font-weight: 700; letter-spacing:-1px; color: #1a5f59;}
+    nav { display: flex; gap: 2rem; margin:1.5rem 0 0.5rem 0;font-size:1.08em;}
+    nav a { color: #333; text-decoration:none; font-weight:500; cursor: pointer;}
+    nav a:hover {color: #e84342; text-decoration:underline;}
+    .main { max-width:1100px; margin:0 auto; padding:2em;}
+    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5em; margin: 2em 0; }
+    .card { background: #fff; padding: 2em; border-radius: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.07); }
+    .card-title { color: #1a5f59; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; margin: 0; }
+    .card-value { font-size: 2.5em; font-weight: 700; color: #e84342; margin: 0.5em 0; }
+    .card-subtitle { color: #888; margin: 0; }
+    .recent-orders { background: #fff; padding: 2em; border-radius: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.07); margin: 2em 0; }
+    .order-item { display: flex; justify-content: space-between; align-items: center; padding: 1.5em; border-bottom: 1px solid #eee; }
+    .order-item:last-child { border-bottom: none; }
+    .order-info h4 { margin: 0 0 0.3em 0; color: #1a5f59; }
+    .order-info p { margin: 0; color: #888; font-size: 0.9em; }
+    .order-status { padding: 0.5em 1em; border-radius: 0.5em; font-weight: 600; font-size: 0.9em; }
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-delivered { background: #d4edda; color: #155724; }
+    .status-processing { background: #d1ecf1; color: #0c5460; }
+    .activity { background: #fff; padding: 2em; border-radius: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.07); margin: 2em 0; }
+    .activity-item { display: flex; gap: 1em; padding: 1em 0; border-bottom: 1px solid #eee; }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-icon { font-size: 1.5em; min-width: 30px; }
+    .activity-text p { margin: 0; color: #666; }
+    .activity-time { color: #999; font-size: 0.9em; }
+    .cta { background:#e84342; color:#fff; border:none; padding:0.7em 1.5em; border-radius:0.5em; font-size:1em; cursor:pointer; font-weight: 600; }
+    .cta:hover { background: #d63838; }
+    .footer { text-align:center; color:#888; background:#fff; padding:2em 0 1em 0; font-size:1em; margin-top:3em; border-top: 1px solid #eee;}
+    a { text-decoration: none; color: inherit; }
+    @media (max-width:900px){.dashboard-grid{grid-template-columns: 1fr;}.main{padding:1em;}.order-item{flex-direction: column; align-items: flex-start; gap: 1em;}}
+  </style>
+</head>
+<body>
+<header>
+  <h1>🛒 Grocery Retailer X</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="loyalty.html">X-Plus Loyalty</a>
+    <a href="recipes.html">Recipes</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+</header>
+
+<div class="main">
+  <h2 style="color: #1a5f59; margin-top: 0;">Welcome Back, Sarah! 👋</h2>
+
+  <!-- Quick Stats -->
+  <div class="dashboard-grid">
+    <div class="card">
+      <h3 class="card-title">💳 Loyalty Points</h3>
+      <div class="card-value">8,250</div>
+      <p class="card-subtitle">Earned this month: 450</p>
+    </div>
+    <div class="card">
+      <h3 class="card-title">🎁 Pending Rewards</h3>
+      <div class="card-value">3</div>
+      <p class="card-subtitle">Total value: £15</p>
+    </div>
+    <div class="card">
+      <h3 class="card-title">📦 Active Orders</h3>
+      <div class="card-value">2</div>
+      <p class="card-subtitle">1 arriving today</p>
+    </div>
+    <div class="card">
+      <h3 class="card-title">💰 Total Saved</h3>
+      <div class="card-value">£124</div>
+      <p class="card-subtitle">This year with loyalty</p>
+    </div>
+  </div>
+
+  <!-- Recent Orders -->
+  <div class="recent-orders">
+    <h3 style="color: #1a5f59; margin-top: 0;">📋 Recent Orders</h3>
+    
+    <div class="order-item">
+      <div class="order-info">
+        <h4>Order #ORD-2025-0847</h4>
+        <p>Fresh Veggie Bundle, Milk, Bread - £24.50</p>
+        <p style="font-size: 0.85em; margin-top: 0.3em;">Nov 24, 2025 • 2:45 PM</p>
+      </div>
+      <div class="order-status status-delivered">✓ Delivered</div>
+    </div>
+
+    <div class="order-item">
+      <div class="order-info">
+        <h4>Order #ORD-2025-0843</h4>
+        <p>Organic Grains Pack, Yogurt, Cheese - £32.15</p>
+        <p style="font-size: 0.85em; margin-top: 0.3em;">Nov 22, 2025 • 10:20 AM</p>
+      </div>
+      <div class="order-status status-delivered">✓ Delivered</div>
+    </div>
+
+    <div class="order-item">
+      <div class="order-info">
+        <h4>Order #ORD-2025-0840</h4>
+        <p>Weekly Essentials Bundle - £45.99</p>
+        <p style="font-size: 0.85em; margin-top: 0.3em;">Nov 20, 2025 • 4:15 PM</p>
+      </div>
+      <div class="order-status status-delivered">✓ Delivered</div>
+    </div>
+
+    <div class="order-item">
+      <div class="order-info">
+        <h4>Order #ORD-2025-0838</h4>
+        <p>Cilantro Chicken Meal Kit - £17.50</p>
+        <p style="font-size: 0.85em; margin-top: 0.3em;">Nov 18, 2025 • 6:30 PM</p>
+      </div>
+      <div class="order-status status-delivered">✓ Delivered</div>
+    </div>
+
+    <button class="cta" style="margin-top: 1.5em;" onclick="alert('View full order history')">View Full History</button>
+  </div>
+
+  <!-- Activity Feed -->
+  <div class="activity">
+    <h3 style="color: #1a5f59; margin-top: 0;">🔔 Recent Activity</h3>
+    
+    <div class="activity-item">
+      <div class="activity-icon">🎉</div>
+      <div>
+        <p><b>Birthday Bonus!</b> You earned 500 bonus points for your birthday month!</p>
+        <p class="activity-time">Nov 23, 2025</p>
+      </div>
+    </div>
+
+    <div class="activity-item">
+      <div class="activity-icon">💰</div>
+      <div>
+        <p><b>New Coupon Unlocked!</b> Get £3 off your next purchase over £20</p>
+        <p class="activity-time">Nov 22, 2025</p>
+      </div>
+    </div>
+
+    <div class="activity-item">
+      <div class="activity-icon">⭐</div>
+      <div>
+        <p><b>Tier Upgrade!</b> You've reached Gold Tier status! Enjoy 5% discounts on all purchases</p>
+        <p class="activity-time">Nov 20, 2025</p>
+      </div>
+    </div>
+
+    <div class="activity-item">
+      <div class="activity-icon">🎁</div>
+      <div>
+        <p><b>Referral Bonus!</b> Friend Sarah M. joined using your code. Both get 250 bonus points!</p>
+        <p class="activity-time">Nov 18, 2025</p>
+      </div>
+    </div>
+
+    <div class="activity-item">
+      <div class="activity-icon">📦</div>
+      <div>
+        <p><b>Order Delivered!</b> Your order #ORD-2025-0840 has been delivered</p>
+        <p class="activity-time">Nov 17, 2025</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="dashboard-grid" style="margin-top: 2em;">
+    <div class="card" style="text-align: center; cursor: pointer; transition: transform 0.3s;" onclick="window.location='shop.html'">
+      <h3 style="color: #1a5f59; margin-top: 0;">🛍️ Continue Shopping</h3>
+      <p>Browse our latest products and deals</p>
+    </div>
+    <div class="card" style="text-align: center; cursor: pointer; transition: transform 0.3s;" onclick="window.location='recipes.html'">
+      <h3 style="color: #1a5f59; margin-top: 0;">👨‍🍳 Explore Recipes</h3>
+      <p>Get meal inspiration and ingredient bundles</p>
+    </div>
+    <div class="card" style="text-align: center; cursor: pointer; transition: transform 0.3s;" onclick="window.location='loyalty.html'">
+      <h3 style="color: #1a5f59; margin-top: 0;">💎 Loyalty Rewards</h3>
+      <p>Redeem your points and unlock benefits</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  &copy; 2025 Grocery Retailer X | Your trusted online grocery store<br>
+  <small>Contact: support@groceryretailerx.com | 1-800-GROCERY</small>
+</div>
+</body>
+</html>

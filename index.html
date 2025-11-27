@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grocery Retailer X - Complete Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; }
+    body { 
+      font-family: 'Roboto', Arial, sans-serif; 
+      background: #f5f5f5;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    .logo-badge {
+      width: 50px;
+      height: 50px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8em;
+      font-weight: 700;
+      color: #1a5f59;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      margin-right: 1rem;
+      flex-shrink: 0;
+    }
+    header { 
+      background: linear-gradient(135deg, #1a5f59 0%, #2d9c9c 100%);
+      color: #fff; 
+      padding: 0.8rem 1rem 0.5rem; 
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15); 
+      position: sticky; 
+      top: 0; 
+      z-index: 100; 
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    header h1 { 
+      margin: 0 0 0.5rem 0; 
+      font-size: clamp(1.5em, 5vw, 2.3em); 
+      font-weight: 700; 
+      letter-spacing: -1px; 
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      flex: 1;
+    }
+    .cart-badge {
+      background: #e84342;
+      color: #fff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 0.2rem;
+    }
+    .cart-badge:hover {
+      background: #d63838;
+      transform: scale(1.1);
+    }
+    nav { 
+      display: flex; 
+      gap: 0.5rem; 
+      margin: 0; 
+      font-size: clamp(0.85em, 2vw, 1.08em); 
+      flex-wrap: wrap;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      width: 100%;
+    }
+    nav button { 
+      background: none; 
+      border: none; 
+      color: #fff; 
+      text-decoration: none; 
+      font-weight: 500; 
+      cursor: pointer; 
+      padding: 0.5em 0.8em; 
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+    nav button:hover { 
+      color: #ffeb3b; 
+      text-decoration: underline;
+    }
+    nav button.active { 
+      color: #ffeb3b; 
+      font-weight: 700; 
+      border-bottom: 3px solid #ffeb3b; 
+    }
+    .page { display: none; }
+    .page.active { display: block; }
+    .hero { 
+      background: linear-gradient(135deg, #2d9c9c 0%, #1a5f59 100%);
+      color: #fff; 
+      padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem) clamp(1.5rem, 4vw, 3rem);
+      border-radius: 0 0 1.5em 1.5em;
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .hero h2 { 
+      margin: 0 0 0.5rem 0; 
+      font-size: clamp(1.5em, 6vw, 2.5em);
+      line-height: 1.2;
+    }
+    .hero p { margin: 0.5rem 0 0 0; font-size: clamp(0.9em, 2vw, 1.1em); }
+    .hero .cta { 
+      background: #e84342; 
+      color: #fff; 
+      border: none; 
+      padding: clamp(0.6em, 2vw, 0.9em) clamp(1em, 3vw, 2em); 
+      border-radius: 1.5em; 
+      font-size: clamp(0.9em, 2vw, 1.1em); 
+      cursor: pointer; 
+      margin-top: 1rem; 
+      font-weight: 600;
+      align-self: flex-start;
+      transition: background 0.3s ease;
+    }
+    .hero .cta:hover { background: #d63838; }
+    .main { 
+      max-width: 1200px; 
+      margin: 0 auto; 
+      padding: clamp(1rem, 3vw, 2rem);
+    }
+    .section { margin: 1.5rem 0; }
+    .stats { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+      gap: 1rem; 
+      margin: 2rem 0;
+    }
+    .stat { 
+      background: #e7f6ec; 
+      border-radius: 1em; 
+      padding: clamp(0.8em, 2vw, 1.5em) 1em; 
+      text-align: center;
+      font-size: clamp(0.9em, 2vw, 1em);
+    }
+    .categories, .featured-items, .products-grid, .recipe-grid, .benefits, .dashboard-grid { 
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: clamp(0.8rem, 3vw, 1.5rem);
+      margin: 2rem 0;
+    }
+    .cat, .item, .product, .recipe-card, .benefit, .card { 
+      background: #fff; 
+      border-radius: 0.8em; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07); 
+      padding: clamp(0.8em, 2vw, 1.5em); 
+      cursor: pointer; 
+      transition: all 0.3s ease;
+    }
+    .cat:hover, .item:hover, .product:hover, .recipe-card:hover, .benefit:hover, .card:hover { 
+      transform: translateY(-5px); 
+      box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+    }
+    .cat img { 
+      width: clamp(40px, 10vw, 60px); 
+      border-radius: 0.7em; 
+      margin-bottom: 0.4em; 
+    }
+    .item-title, .product-title, .recipe-title { 
+      font-weight: 600; 
+      color: #188187;
+      font-size: clamp(0.95em, 2vw, 1.1em);
+    }
+    .item img {
+      width: 100%;
+      height: clamp(140px, 32vw, 200px);
+      object-fit: cover;
+      border-radius: 0.8em;
+      margin-bottom: 0.5em;
+      image-rendering: -webkit-optimize-contrast;
+    }
+    .product-img, .recipe-img { 
+      width: 100%; 
+      height: clamp(150px, 35vw, 220px); 
+      object-fit: cover; 
+      border-radius: 0.8em; 
+      margin-bottom: 0.5em;
+      image-rendering: -webkit-optimize-contrast;
+    }
+    .product-price { 
+      font-size: clamp(1.1em, 3vw, 1.5em); 
+      color: #e84342; 
+      font-weight: 700; 
+      margin: 0.5em 0; 
+    }
+    .recipe-meta { 
+      display: flex; 
+      flex-wrap: wrap;
+      gap: clamp(0.5em, 2vw, 1.5em); 
+      color: #666; 
+      margin: 0.5em 0 1em 0; 
+      font-size: clamp(0.8em, 1.5vw, 0.95em);
+    }
+    .loyalty-card { 
+      background: linear-gradient(135deg, #d4af37 0%, #daa520 50%, #b8860b 100%); 
+      border-radius: 1.5em; 
+      box-shadow: 0 4px 18px rgba(212,175,55,0.35); 
+      padding: clamp(1.5em, 3vw, 3em);
+      margin: 2em auto; 
+      max-width: 90%;
+      width: 100%;
+    }
+    .loyalty-card h3 { color: #5a3a1a; margin-top: 0; }
+    .dashboard { 
+      background: #fff; 
+      border-radius: 0.8em; 
+      margin: 2em 0 1em 0; 
+      padding: clamp(1em, 3vw, 2em); 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+    }
+    .dashboard h2 { color: #1a5f59; }
+    .filters { 
+      background: #fff; 
+      padding: clamp(1em, 2vw, 1.5em); 
+      border-radius: 0.8em; 
+      margin-bottom: 2em; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07); 
+    }
+    .filters input { 
+      padding: clamp(0.6em, 2vw, 0.9em); 
+      width: 100%; 
+      border: 1px solid #ddd; 
+      border-radius: 0.5em; 
+      font-size: clamp(0.9em, 2vw, 1em);
+      min-height: 44px;
+    }
+    .sidebar { 
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2em;
+    }
+    .sidebar-item { 
+      background: #fff; 
+      padding: clamp(0.8em, 2vw, 1.2em); 
+      border-radius: 0.5em; 
+      cursor: pointer; 
+      text-align: center; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      transition: all 0.3s ease;
+      font-size: clamp(0.9em, 2vw, 1em);
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sidebar-item:hover { background: #f0f0f0; }
+    .cta { 
+      background: #e84342; 
+      color: #fff; 
+      border: none; 
+      padding: clamp(0.6em, 2vw, 0.9em) clamp(0.8em, 3vw, 1.5em); 
+      border-radius: 0.5em; 
+      font-size: clamp(0.9em, 2vw, 1em); 
+      cursor: pointer; 
+      font-weight: 600;
+      transition: background 0.3s ease;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cta:hover { background: #d63838; }
+    .cta-full { width: 100%; }
+    .order-item { 
+      display: flex; 
+      flex-direction: column;
+      gap: 1rem;
+      justify-content: space-between; 
+      padding: clamp(1em, 3vw, 1.5em); 
+      border-bottom: 1px solid #eee; 
+      background: #fff; 
+      margin: 0.5em 0; 
+      border-radius: 0.5em;
+    }
+    @media (min-width: 768px) {
+      .order-item { flex-direction: row; align-items: center; }
+    }
+    .order-status { 
+      padding: clamp(0.4em, 1vw, 0.7em) clamp(0.8em, 2vw, 1.2em); 
+      border-radius: 0.5em; 
+      font-weight: 600; 
+      font-size: clamp(0.8em, 1.5vw, 0.95em);
+      white-space: nowrap;
+    }
+    .status-delivered { background: #d4edda; color: #155724; }
+    .loyalty-hero, .recipes-hero { 
+      background: linear-gradient(135deg, #1a5f59 0%, #2d9c9c 100%); 
+      color: #fff; 
+      padding: clamp(2rem, 5vw, 3em) clamp(1rem, 3vw, 2em); 
+      border-radius: 1em; 
+      text-align: center; 
+      margin-bottom: 2em; 
+    }
+    .loyalty-hero h2, .recipes-hero h2 { 
+      margin: 0; 
+      font-size: clamp(1.8em, 6vw, 2.5em);
+      line-height: 1.2;
+    }
+    .card-number { 
+      font-size: clamp(1.5em, 4vw, 2.2em); 
+      letter-spacing: 2px; 
+      color: #4a2c5e; 
+      font-weight: 700; 
+      margin: 1em 0; 
+      font-family: 'Courier New', monospace;
+      word-break: break-all;
+    }
+    .points { 
+      font-size: clamp(2em, 8vw, 3em); 
+      color: #4a2c5e; 
+      font-weight: 700; 
+      margin: 0.5em 0; 
+    }
+    .recipe-detail { 
+      background: #fff; 
+      padding: clamp(1.5em, 3vw, 2.5em); 
+      border-radius: 1em; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07); 
+      margin: 2em auto; 
+      max-width: 95%;
+      display: none;
+    }
+    .recipe-detail.active { display: block; }
+    .recipe-detail img { 
+      width: 100%; 
+      height: clamp(200px, 50vw, 400px);
+      object-fit: cover; 
+      border-radius: 1em; 
+      margin-bottom: 1.5em; 
+    }
+    .ingredients, .instructions { 
+      background: #f0f8f4; 
+      padding: clamp(1em, 2vw, 1.5em); 
+      border-radius: 1em; 
+      margin: 1.5em 0;
+      font-size: clamp(0.9em, 2vw, 1em);
+    }
+    .ingredients ul, .instructions ol { padding-left: clamp(1.2em, 3vw, 2em); }
+    .ingredients li, .instructions li { margin: 0.5em 0; }
+    
+    /* Cart Modal Styles */
+    .cart-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .cart-modal.active {
+      display: flex;
+    }
+    .cart-content {
+      background: #fff;
+      border-radius: 1em;
+      padding: 2em;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    .cart-content h2 {
+      color: #1a5f59;
+      margin-top: 0;
+      text-align: center;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em;
+      border-bottom: 1px solid #eee;
+      gap: 1em;
+    }
+    .cart-item-info {
+      flex: 1;
+    }
+    .cart-item-name {
+      font-weight: 600;
+      color: #1a5f59;
+    }
+    .cart-item-price {
+      color: #e84342;
+      font-weight: 700;
+    }
+    .remove-btn {
+      background: #ff6b6b;
+      color: #fff;
+      border: none;
+      padding: 0.4em 0.8em;
+      border-radius: 0.4em;
+      cursor: pointer;
+      font-size: 0.9em;
+      transition: background 0.3s;
+    }
+    .remove-btn:hover {
+      background: #ff5252;
+    }
+    .cart-total {
+      text-align: right;
+      padding: 1em;
+      font-size: 1.2em;
+      color: #1a5f59;
+      font-weight: 700;
+      border-top: 2px solid #eee;
+    }
+    .cart-empty {
+      text-align: center;
+      padding: 2em;
+      color: #666;
+    }
+    .close-cart {
+      background: #ddd;
+      color: #333;
+      border: none;
+      padding: 0.6em 1.2em;
+      border-radius: 0.5em;
+      cursor: pointer;
+      float: right;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+    .close-cart:hover {
+      background: #ccc;
+    }
+    
+    .footer { 
+      text-align: center; 
+      color: #888; 
+      background: #fff; 
+      padding: clamp(1rem, 3vw, 2em) 1rem; 
+      font-size: clamp(0.8em, 2vw, 1em); 
+      margin-top: 3em; 
+      border-top: 1px solid #eee;
+    }
+    a { text-decoration: none; color: inherit; }
+    h2 { color: #1a5f59; margin-top: 2em; text-align: center; font-size: clamp(1.5em, 5vw, 2em); }
+    
+    /* Mobile specific adjustments */
+    @media (max-width: 480px) {
+      header { padding: 0.8rem 0.5rem 0.3rem; }
+      header h1 { margin-bottom: 0.3rem; }
+      .hero { border-radius: 0 0 1em 1em; }
+      nav { gap: 0.3rem; }
+      nav button { padding: 0.4em 0.6em; }
+      .main { padding: 0.8rem; }
+      .section { margin: 1rem 0; }
+      .stats { gap: 0.8rem; }
+      .stat { padding: 0.8em 0.6em; }
+      .categories, .featured-items, .products-grid, .recipe-grid, .benefits, .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Tablet adjustments */
+    @media (min-width: 481px) and (max-width: 1024px) {
+      .categories, .featured-items, .benefits {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .products-grid, .recipe-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Laptop/Desktop adjustments */
+    @media (min-width: 1025px) {
+      .categories, .featured-items, .benefits {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .products-grid, .recipe-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .dashboard-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    /* ANIMATIONS */
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 5px rgba(232,67,66,0.3); }
+      50% { box-shadow: 0 0 15px rgba(232,67,66,0.6); }
+    }
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Apply animations */
+    .page { animation: fadeIn 0.5s ease; }
+    .product, .recipe-card, .item, .benefit, .card { animation: slideInUp 0.6s ease; }
+    .cat { animation: slideInUp 0.6s ease; }
+    .hero { animation: slideInUp 0.8s ease; }
+
+    /* Badge animations */
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
+      color: #fff;
+      padding: 0.3em 0.6em;
+      border-radius: 20px;
+      font-size: 0.75em;
+      font-weight: 700;
+      animation: pulse 2s infinite;
+      margin: 0.3em 0;
+    }
+    .badge.new { background: linear-gradient(135deg, #00d2d3 0%, #54a0ff 100%); }
+    .badge.hot { background: linear-gradient(135deg, #ff6348 0%, #ff4757 100%); animation: glow 2s infinite; }
+    .badge.organic { background: linear-gradient(135deg, #2ed573 0%, #26de81 100%); }
+
+    /* Enhanced product card */
+    .product { position: relative; overflow: hidden; }
+    .product::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+      z-index: 1;
+    }
+    .product:hover::before { left: 100%; }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #2ed573 0%, #26de81 100%);
+      color: #fff;
+      padding: 1em 1.5em;
+      border-radius: 0.5em;
+      box-shadow: 0 4px 12px rgba(46,213,115,0.3);
+      animation: slideInRight 0.4s ease;
+      z-index: 1000;
+      font-weight: 600;
+    }
+
+    /* Trending badge */
+    .trending-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 2rem;
+      border-radius: 1em;
+      color: #fff;
+      margin: 2rem 0;
+      animation: slideInUp 0.8s ease;
+    }
+    .trending-section h2 { margin: 0 0 1rem 0; color: #fff; }
+
+    /* Best seller icon */
+    .bestseller {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #ff4757;
+      color: #fff;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9em;
+      text-align: center;
+      animation: rotate 20s linear infinite;
+      z-index: 2;
+    }
+
+    /* Footer enhancements */
+    .footer {
+      background: linear-gradient(135deg, #1a5f59 0%, #2d9c9c 100%);
+      color: #fff;
+      padding: 2rem;
+      text-align: center;
+      margin-top: 3rem;
+    }
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto 2rem;
+      padding: 2rem 0;
+    }
+    .footer-section h4 { margin-bottom: 1rem; color: #ffeb3b; }
+    .footer-section a { display: block; color: #fff; margin: 0.5rem 0; text-decoration: none; transition: color 0.3s; }
+    .footer-section a:hover { color: #ffeb3b; }
+    .social-icons { display: flex; gap: 1rem; justify-content: center; margin: 1rem 0; }
+    .social-icons a { color: #fff; font-size: 1.5em; }
+
+    /* Seasonal banners */
+    .promo-banner {
+      background: linear-gradient(90deg, #ffa502 0%, #ffb627 100%);
+      color: #fff;
+      padding: 1rem;
+      border-radius: 0.5em;
+      text-align: center;
+      margin: 1rem 0;
+      font-weight: 700;
+      animation: slideInUp 0.8s ease;
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, #1a5f59 0%, #2d9c9c 100%);
+      padding: 1rem;
+      border-top: 2px solid #ffeb3b;
+      z-index: 99;
+    }
+    .mobile-menu button {
+      flex: 1;
+      background: none;
+      border: none;
+      color: #fff;
+      padding: 1rem;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+
+    @media (max-width: 480px) {
+      .mobile-menu { display: flex; gap: 0.5rem; }
+      body { padding-bottom: 80px; }
+    }
+
+    /* Loading animation */
+    .spinner {
+      border: 4px solid rgba(232,67,66,0.1);
+      border-top: 4px solid #e84342;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: rotate 1s linear infinite;
+    }
+
+    /* Color gradients for categories */
+    .cat-gradient-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .cat-gradient-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+    .cat-gradient-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+    .cat-gradient-4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo-badge">🥬</div>
+  <div>
+    <h1>Grocery Retailer X</h1>
+    <nav>
+      <button class="nav-btn active" onclick="showPage('home')">Home</button>
+      <button class="nav-btn" onclick="showPage('shop')">Shop</button>
+      <button class="nav-btn" onclick="showPage('loyalty')">Loyalty</button>
+      <button class="nav-btn" onclick="showPage('recipes')">Recipes</button>
+      <button class="nav-btn" onclick="showPage('dashboard')">Dashboard</button>
+    </nav>
+  </div>
+  <div class="cart-badge" onclick="toggleCart()" title="View Cart">
+    <span id="cartCount">0</span>
+  </div>
+</header>
+
+<!-- HOME PAGE -->
+<div id="home" class="page active">
+  <div class="hero">
+    <h2 style="color: #fff;">Your Smart Grocery, Everywhere.</h2>
+    <p>Shop 2700+ stores. Join X-Plus Loyalty. Fast delivery. Amazing rewards.</p>
+    <button class="cta" onclick="showPage('shop')">Start Shopping</button>
+  </div>
+  <div class="main">
+    <div class="stats section">
+      <div class="stat"><b>🚚</b><br>Express Delivery</div>
+      <div class="stat"><b>🎁</b><br>Loyalty Rewards</div>
+      <div class="stat"><b>⭐</b><br>Quality Guaranteed</div>
+      <div class="stat"><b>💰</b><br>Best Prices</div>
+    </div>
+    
+    <h2>Shop by Category</h2>
+    <div class="section categories">
+      <div class="cat" onclick="showPage('shop'); filterCategory('fresh')"><img src="https://img.icons8.com/color/96/000000/vegetarian-food.png"/><div>Fresh Produce</div></div>
+      <div class="cat" onclick="showPage('shop'); filterCategory('dairy')"><img src="https://img.icons8.com/color/96/000000/dairy-products.png"/><div>Dairy & Eggs</div></div>
+      <div class="cat" onclick="showPage('shop'); filterCategory('branded')"><img src="https://img.icons8.com/color/96/000000/grocery-store.png"/><div>Store Brands</div></div>
+      <div class="cat" onclick="showPage('shop'); filterCategory('offers')"><img src="https://img.icons8.com/color/96/000000/discount--v1.png"/><div>Special Offers</div></div>
+    </div>
+
+    <!-- PROMO BANNER -->
+    <div class="promo-banner">
+      🎉 LIMITED TIME OFFER: Get 30% OFF on Fresh Vegetables! Use Code: FRESH30
+    </div>
+
+    <h2>🔥 Trending Now</h2>
+    <div class="trending-section">
+      <h2 style="margin: 0; font-size: 1.3em;">⚡ Hot Deals This Week</h2>
+      <p style="margin: 0.5rem 0 0 0; font-size: 0.95em;">Top sellers flying off the shelves!</p>
+    </div>
+    <div class="featured-items section" style="margin-bottom: 2rem;">
+      <div class="item" style="position: relative;">
+        <div class="bestseller">🏆 #1</div>
+        <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=300&q=80" alt="Hot Deal">
+        <span class="badge hot">HOT DEAL</span>
+        <div class="item-title">Premium Tomatoes</div>
+        <p>Fresh & Juicy - <strong>£3.50</strong> <span style="text-decoration: line-through; color: #999;">£4.99</span></p>
+        <button class="cta cta-full" onclick="addToCart('Tomatoes (6pc)', 3.50); showToast('🍅 Tomatoes added to cart!')">Quick Add</button>
+      </div>
+      <div class="item" style="position: relative;">
+        <div class="bestseller">🏆 #2</div>
+        <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=300&q=80" alt="Best Seller">
+        <span class="badge">BESTSELLER</span>
+        <div class="item-title">Fresh Milk</div>
+        <p>2L Pack - <strong>£2.00</strong></p>
+        <button class="cta cta-full" onclick="addToCart('Milk (2L)', 2.00); showToast('🥛 Milk added to cart!')">Quick Add</button>
+      </div>
+      <div class="item" style="position: relative;">
+        <div class="bestseller">🏆 #3</div>
+        <img src="https://images.unsplash.com/photo-1524206365891-394a665efbad?auto=format&fit=crop&w=300&q=80" alt="Organic">
+        <span class="badge organic">ORGANIC</span>
+        <div class="item-title">Fresh Broccoli</div>
+        <p>500g - <strong>£1.50</strong></p>
+        <button class="cta cta-full" onclick="addToCart('Broccoli (500g)', 1.50); showToast('🥦 Broccoli added to cart!')">Quick Add</button>
+      </div>
+    </div>
+
+    <h2>⭐ New Arrivals</h2>
+    <div class="featured-items section">
+      <div class="item">
+        <span class="badge new">NEW</span>
+        <img src="https://images.unsplash.com/photo-1585518419759-82c01d40b2c0?auto=format&fit=crop&w=300&q=80" alt="New Product">
+        <div class="item-title">Fresh Grapes</div>
+        <p>1kg Pack - £5.99</p>
+        <button class="cta cta-full" onclick="showPage('shop')">Shop Now</button>
+      </div>
+      <div class="item">
+        <span class="badge new">NEW</span>
+        <img src="https://images.unsplash.com/photo-1587393853556-269c440a3c3c?auto=format&fit=crop&w=300&q=80" alt="New Product">
+        <div class="item-title">Fresh Strawberries</div>
+        <p>200g Pack - £4.50</p>
+        <button class="cta cta-full" onclick="showPage('shop')">Shop Now</button>
+      </div>
+      <div class="item">
+        <span class="badge organic">ORGANIC</span>
+        <img src="https://images.unsplash.com/photo-1488477181946-85a2bc299e38?auto=format&fit=crop&w=300&q=80" alt="Organic">
+        <div class="item-title">Greek Yogurt</div>
+        <p>500g - £2.50</p>
+        <button class="cta cta-full" onclick="showPage('shop')">Shop Now</button>
+      </div>
+    </div>
+
+    <h2>Featured This Week</h2>
+    <div class="featured-items section">
+      <div class="item">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=300&q=80" alt="Fresh Veggies">
+        <div class="item-title">Fresh Veggie Bundle</div>
+        <p>Mixed fresh vegetables - £8.99</p>
+        <button class="cta cta-full" onclick="showPage('shop')">View Details</button>
+      </div>
+      <div class="item">
+        <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=300&q=80" alt="Organic">
+        <div class="item-title">Organic Grains Pack</div>
+        <p>Premium selection - £12.50</p>
+        <button class="cta cta-full" onclick="showPage('shop')">View Details</button>
+      </div>
+      <div class="item">
+        <img src="https://images.unsplash.com/photo-1585518419759-74eef6b9ebb0?auto=format&fit=crop&w=300&q=80" alt="Dairy">
+        <div class="item-title">Dairy Essentials</div>
+        <p>Milk, yogurt & cheese - £15.99</p>
+        <button class="cta cta-full" onclick="showPage('shop')">View Details</button>
+      </div>
+    </div>
+
+    <div class="dashboard section">
+      <h2 style="margin-top: 0;">Why Shop With Us?</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5em; margin-top: 1.5em;">
+        <div>
+          <h4 style="color: #e84342;">🚚 Fast Delivery</h4>
+          <p>Same-day delivery in select areas. Quick checkout process.</p>
+        </div>
+        <div>
+          <h4 style="color: #e84342;">💰 Great Prices</h4>
+          <p>Price match guarantee on essentials. Weekly deals & offers.</p>
+        </div>
+        <div>
+          <h4 style="color: #e84342;">⭐ Quality Products</h4>
+          <p>Fresh produce daily. Premium brand selection.</p>
+        </div>
+        <div>
+          <h4 style="color: #e84342;">🎁 Loyalty Rewards</h4>
+          <p>Join X-Plus for exclusive discounts and free delivery.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SHOP PAGE -->
+<div id="shop" class="page">
+  <div class="main">
+    <h2 style="margin-top: 0;">🛍️ Our Products</h2>
+    
+    <div class="filters">
+      <input type="text" id="searchBox" placeholder="Search products..." onkeyup="searchProducts()">
+    </div>
+
+    <div class="sidebar" id="filterBar">
+      <button class="sidebar-item" onclick="filterProducts('all')">All Products</button>
+      <button class="sidebar-item" onclick="filterProducts('vegetables')">🥬 Vegetables</button>
+      <button class="sidebar-item" onclick="filterProducts('fresh')">🍌 Fresh Fruits</button>
+      <button class="sidebar-item" onclick="filterProducts('dairy')">🥛 Dairy</button>
+      <button class="sidebar-item" onclick="filterProducts('branded')">Store Brands</button>
+      <button class="sidebar-item" onclick="filterProducts('offers')">💰 Offers</button>
+    </div>
+
+    <div class="products-grid" id="productsGrid"></div>
+  </div>
+</div>
+
+<!-- LOYALTY PAGE -->
+<div id="loyalty" class="page">
+  <div class="loyalty-hero">
+    <h2 style="color: #fff;">X-Plus Loyalty Program</h2>
+    <p style="font-size: 1.2em; margin: 1em 0;">Save more. Earn more. Live better.</p>
+  </div>
+  <div class="main">
+    <div class="loyalty-card">
+      <h3 style="margin-top: 0; color: #4a2c5e;">Your Loyalty Card</h3>
+      <div style="background: #f0f0f0; padding: 2em; border-radius: 1em; margin: 1.5em 0;">
+        <p style="color: #4a2c5e; margin: 0; font-weight: 700;">MEMBER CARD</p>
+        <div class="card-number">1234 5678 9101</div>
+        <p style="margin: 0; color: #4a2c5e;">Valid through 12/2026</p>
+      </div>
+      <div style="margin: 2em 0;">
+        <p style="color: #4a2c5e; font-weight: 600;">Your Points Balance</p>
+        <div class="points">8,250</div>
+        <p style="color: #4a2c5e; margin: 0; font-weight: 500;">Redeem points for rewards!</p>
+      </div>
+      <button class="cta cta-full">Join Now / Activate Card</button>
+    </div>
+
+    <h2>Member Benefits</h2>
+    <div class="benefits section">
+      <div class="benefit">
+        <div style="font-size: 3em; margin-bottom: 0.5em;">🚚</div>
+        <h3>Free Delivery</h3>
+        <p>Unlimited free delivery on all orders over £20</p>
+      </div>
+      <div class="benefit">
+        <div style="font-size: 3em; margin-bottom: 0.5em;">⭐</div>
+        <h3>Double Points</h3>
+        <p>2x points on store brands & member exclusive items</p>
+      </div>
+      <div class="benefit">
+        <div style="font-size: 3em; margin-bottom: 0.5em;">💰</div>
+        <h3>Price Match</h3>
+        <p>Guaranteed lowest price on essential items</p>
+      </div>
+      <div class="benefit">
+        <div style="font-size: 3em; margin-bottom: 0.5em;">🎁</div>
+        <h3>Exclusive Deals</h3>
+        <p>Early access to sales & personalized coupons</p>
+      </div>
+      <div class="benefit">
+        <div style="font-size: 3em; margin-bottom: 0.5em;">🍽️</div>
+        <h3>Recipe Rewards</h3>
+        <p>Get ingredient bundles at special member prices</p>
+      </div>
+      <div class="benefit">
+        <div style="font-size: 3em; margin-bottom: 0.5em;">🎉</div>
+        <h3>Birthday Bonus</h3>
+        <p>500 bonus points during your birthday month</p>
+      </div>
+    </div>
+
+    <h2 style="margin-top: 3em;">Loyalty Tiers</h2>
+    <div style="max-width: 1000px; margin: 2em auto;">
+      <div style="background: #fff; padding: 2em; margin: 1em 0; border-radius: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.07);">
+        <div style="color: #e84342; font-size: 1.5em; font-weight: 700;">🥉 Silver Tier</div>
+        <p><b>Points per £:</b> 1 point per £1 spent</p>
+        <p><b>Min Spend:</b> No minimum</p>
+        <p><b>Perks:</b> Basic points, birthday bonus, early sale access</p>
+      </div>
+      <div style="background: #fff; padding: 2em; margin: 1em 0; border-radius: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.07);">
+        <div style="color: #e84342; font-size: 1.5em; font-weight: 700;">🥈 Gold Tier</div>
+        <p><b>Points per £:</b> 1.25 points per £1 spent</p>
+        <p><b>Min Spend:</b> £500 annually</p>
+        <p><b>Perks:</b> Silver perks + 5% discount + VIP customer service</p>
+      </div>
+      <div style="background: #fff; padding: 2em; margin: 1em 0; border-radius: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.07);">
+        <div style="color: #e84342; font-size: 1.5em; font-weight: 700;">🥇 Platinum Tier</div>
+        <p><b>Points per £:</b> 1.5 points per £1 spent</p>
+        <p><b>Min Spend:</b> £1200 annually</p>
+        <p><b>Perks:</b> Gold perks + 10% discount + exclusive product access + free shipping always</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RECIPES PAGE -->
+<div id="recipes" class="page">
+  <div class="recipes-hero">
+    <h2 style="color: #fff;">🍳 Featured Recipes</h2>
+    <p style="font-size: 1.1em; margin: 0;">Delicious meals made easy with ingredients from our store</p>
+  </div>
+  <div class="main">
+    <div class="recipe-grid" id="recipeGrid"></div>
+    <div class="recipe-detail" id="recipeDetail">
+      <button class="cta" onclick="closeRecipe()" style="float: right; margin-bottom: 1em;">✕ Close</button>
+      <img id="detailImg" src="" alt="" style="clear: both;">
+      <h2 id="detailTitle" style="text-align: left; margin-top: 1em;"></h2>
+      <div class="ingredients">
+        <h3 style="color: #2d9c9c; margin-top: 0;">📋 Ingredients</h3>
+        <ul id="detailIngredients"></ul>
+      </div>
+      <div class="instructions">
+        <h3 style="color: #d4a574; margin-top: 0;">👨‍🍳 Instructions</h3>
+        <ol id="detailInstructions"></ol>
+      </div>
+      <button class="cta cta-full" onclick="addIngredientsToCart()">Add Ingredients to Cart</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD PAGE -->
+<div id="dashboard" class="page">
+  <div class="main">
+    <h2 style="margin-top: 0;">Welcome Back, Sarah! 👋</h2>
+
+    <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5em; margin: 2em 0;">
+      <div class="card">
+        <h3 style="color: #1a5f59; margin-top: 0; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px;">💳 Loyalty Points</h3>
+        <div style="font-size: 2.5em; font-weight: 700; color: #e84342; margin: 0.5em 0;">8,250</div>
+        <p style="color: #888; margin: 0;">Earned this month: 450</p>
+      </div>
+      <div class="card">
+        <h3 style="color: #1a5f59; margin-top: 0; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px;">🎁 Pending Rewards</h3>
+        <div style="font-size: 2.5em; font-weight: 700; color: #e84342; margin: 0.5em 0;">3</div>
+        <p style="color: #888; margin: 0;">Total value: £15</p>
+      </div>
+      <div class="card">
+        <h3 style="color: #1a5f59; margin-top: 0; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px;">📦 Active Orders</h3>
+        <div style="font-size: 2.5em; font-weight: 700; color: #e84342; margin: 0.5em 0;">2</div>
+        <p style="color: #888; margin: 0;">1 arriving today</p>
+      </div>
+      <div class="card">
+        <h3 style="color: #1a5f59; margin-top: 0; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px;">💰 Total Saved</h3>
+        <div style="font-size: 2.5em; font-weight: 700; color: #e84342; margin: 0.5em 0;">£124</div>
+        <p style="color: #888; margin: 0;">This year with loyalty</p>
+      </div>
+    </div>
+
+    <h2>📋 Recent Orders</h2>
+    <div style="max-width: 1000px; margin: 2em auto;">
+      <div class="order-item">
+        <div>
+          <h4 style="margin: 0; color: #1a5f59;">Order #ORD-2025-0847</h4>
+          <p style="margin: 0.3em 0 0 0; color: #666;">Fresh Veggie Bundle, Milk, Bread - £24.50</p>
+          <p style="font-size: 0.85em; margin: 0.3em 0 0 0; color: #999;">Nov 24, 2025</p>
+        </div>
+        <div class="order-status status-delivered">✓ Delivered</div>
+      </div>
+      <div class="order-item">
+        <div>
+          <h4 style="margin: 0; color: #1a5f59;">Order #ORD-2025-0843</h4>
+          <p style="margin: 0.3em 0 0 0; color: #666;">Organic Grains Pack, Yogurt, Cheese - £32.15</p>
+          <p style="font-size: 0.85em; margin: 0.3em 0 0 0; color: #999;">Nov 22, 2025</p>
+        </div>
+        <div class="order-status status-delivered">✓ Delivered</div>
+      </div>
+    </div>
+
+    <h2 style="margin-top: 3em;">Quick Actions</h2>
+    <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5em; margin: 2em 0;">
+      <div class="card" style="text-align: center; cursor: pointer;">
+        <h3 style="color: #1a5f59; margin-top: 0;" onclick="showPage('shop')">🛍️ Continue Shopping</h3>
+        <p>Browse our latest products and deals</p>
+      </div>
+      <div class="card" style="text-align: center; cursor: pointer;">
+        <h3 style="color: #1a5f59; margin-top: 0;" onclick="showPage('recipes')">👨‍🍳 Explore Recipes</h3>
+        <p>Get meal inspiration and ingredient bundles</p>
+      </div>
+      <div class="card" style="text-align: center; cursor: pointer;">
+        <h3 style="color: #1a5f59; margin-top: 0;" onclick="showPage('loyalty')">💎 Loyalty Rewards</h3>
+        <p>Redeem your points and unlock benefits</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CART MODAL -->
+<div class="cart-modal" id="cartModal">
+  <div class="cart-content">
+    <button class="close-cart" onclick="toggleCart()">✕ Close</button>
+    <h2 style="clear: both; margin-top: 0;">🛒 Your Shopping Cart</h2>
+    <div id="cartItems"></div>
+    <div class="cart-total">
+      Total: <span id="cartTotalAmount">£0.00</span>
+    </div>
+    <button class="cta cta-full" style="margin-top: 1em;" onclick="checkout()">Checkout</button>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-links">
+    <div class="footer-section">
+      <h4>🛒 Shop</h4>
+      <a href="#" onclick="showPage('shop')">All Products</a>
+      <a href="#" onclick="showPage('shop'); filterProducts('vegetables')">Vegetables</a>
+      <a href="#" onclick="showPage('shop'); filterProducts('fresh')">Fresh Fruits</a>
+      <a href="#" onclick="showPage('shop'); filterProducts('offers')">Special Offers</a>
+    </div>
+    <div class="footer-section">
+      <h4>💎 Loyalty</h4>
+      <a href="#" onclick="showPage('loyalty')">X-Plus Program</a>
+      <a href="#" onclick="showPage('loyalty')">Member Benefits</a>
+      <a href="#" onclick="showPage('loyalty')">Earn Points</a>
+      <a href="#" onclick="showPage('loyalty')">Redeem Rewards</a>
+    </div>
+    <div class="footer-section">
+      <h4>👨‍🍳 Recipes</h4>
+      <a href="#" onclick="showPage('recipes')">Featured Recipes</a>
+      <a href="#" onclick="showPage('recipes')">Meal Ideas</a>
+      <a href="#" onclick="showPage('recipes')">Ingredient Bundles</a>
+    </div>
+    <div class="footer-section">
+      <h4>ℹ️ Help</h4>
+      <a href="#">Contact Us</a>
+      <a href="#">Delivery Info</a>
+      <a href="#">Returns Policy</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+  </div>
+  <div class="social-icons">
+    <a href="#" title="Facebook">👨‍💼</a>
+    <a href="#" title="Twitter">🐦</a>
+    <a href="#" title="Instagram">📷</a>
+    <a href="#" title="YouTube">▶️</a>
+  </div>
+  <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1.5rem;">
+    <p>&copy; 2025 Grocery Retailer X | Your trusted online grocery store</p>
+    <p><small>Contact: support@groceryretailerx.com | 1-800-GROCERY</small></p>
+  </div>
+</div>
+
+<script>
+  // Cart data
+  let cart = [];
+  
+  // Product data
+  const products = [
+    // VEGETABLES - Exotic & Fresh
+    { id: 1, name: 'Broccoli (500g)', price: 1.50, category: 'vegetables', image: 'https://images.unsplash.com/photo-1524206365891-394a665efbad?auto=format&fit=crop&w=200&q=80', rating: 4.7, discount: '20%' },
+    { id: 2, name: 'Carrots (1kg)', price: 2.20, category: 'vegetables', image: 'https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?auto=format&fit=crop&w=200&q=80', rating: 4.6, discount: '15%' },
+    { id: 3, name: 'Tomatoes (6pc)', price: 3.50, category: 'vegetables', image: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=200&q=80', rating: 4.8, discount: '12%' },
+    { id: 4, name: 'Bell Peppers (3pc)', price: 2.99, category: 'vegetables', image: 'https://images.unsplash.com/photo-1599599810694-b5ac4dd37e83?auto=format&fit=crop&w=200&q=80', rating: 4.5, discount: '18%' },
+    { id: 5, name: 'Spinach (200g)', price: 1.80, category: 'vegetables', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=200&q=80', rating: 4.4, discount: '24%' },
+    { id: 6, name: 'Zucchini (2pc)', price: 2.50, category: 'vegetables', image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=200&q=80', rating: 4.3, discount: '20%' },
+    { id: 7, name: 'Lettuce (1pc)', price: 1.20, category: 'vegetables', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=200&q=80', rating: 4.6, discount: '65%' },
+    { id: 8, name: 'Cabbage (1pc)', price: 1.99, category: 'vegetables', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=200&q=80', rating: 4.5, discount: '16%' },
+    { id: 9, name: 'Onions (2kg)', price: 3.20, category: 'vegetables', image: 'https://images.unsplash.com/photo-1599599810694-b5ac4dd37e83?auto=format&fit=crop&w=200&q=80', rating: 4.7, discount: '22%' },
+    { id: 10, name: 'Garlic (500g)', price: 2.80, category: 'vegetables', image: 'https://images.unsplash.com/photo-1599599810694-b5ac4dd37e83?auto=format&fit=crop&w=200&q=80', rating: 4.4, discount: '10%' },
+    { id: 11, name: 'Sweet Corn (2pc)', price: 2.40, category: 'vegetables', image: 'https://images.unsplash.com/photo-1599599810694-b5ac4dd37e83?auto=format&fit=crop&w=200&q=80', rating: 4.6, discount: '24%' },
+    { id: 12, name: 'Baby Potatoes (1kg)', price: 2.99, category: 'vegetables', image: 'https://images.unsplash.com/photo-1599599810694-b5ac4dd37e83?auto=format&fit=crop&w=200&q=80', rating: 4.5, discount: '18%' },
+    { id: 13, name: 'Cucumbers (3pc)', price: 2.50, category: 'vegetables', image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=200&q=80', rating: 4.7, discount: '14%' },
+    { id: 14, name: 'Asparagus (500g)', price: 4.20, category: 'vegetables', image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=200&q=80', rating: 4.8, discount: '12%' },
+    { id: 15, name: 'Cherry Tomatoes (250g)', price: 2.80, category: 'vegetables', image: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=200&q=80', rating: 4.9, discount: '20%' },
+    { id: 16, name: 'Mushrooms (200g)', price: 3.50, category: 'vegetables', image: 'https://images.unsplash.com/photo-1599599810694-b5ac4dd37e83?auto=format&fit=crop&w=200&q=80', rating: 4.6, discount: '15%' },
+    { id: 17, name: 'Pak Choi (250g)', price: 2.10, category: 'vegetables', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=200&q=80', rating: 4.5, discount: '20%' },
+    { id: 18, name: 'Brussels Sprouts (300g)', price: 3.80, category: 'vegetables', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=200&q=80', rating: 4.7, discount: '18%' },
+    { id: 19, name: 'Celery Bunch (1pc)', price: 1.50, category: 'vegetables', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=200&q=80', rating: 4.4, discount: '12%' },
+    { id: 20, name: 'Eggplant (2pc)', price: 2.70, category: 'vegetables', image: 'https://images.unsplash.com/photo-1599599810694-b5ac4dd37e83?auto=format&fit=crop&w=200&q=80', rating: 4.5, discount: '16%' },
+    
+    // FRESH FRUITS
+    { id: 21, name: 'Banana (1kg)', price: 2.00, category: 'fresh', image: 'https://images.unsplash.com/photo-1528527506e8-f17045e8bfa0?auto=format&fit=crop&w=200&q=80', rating: 4.5 },
+    { id: 22, name: 'Apples (6pc)', price: 3.99, category: 'fresh', image: 'https://images.unsplash.com/photo-1560806674-104a53d6f23b?auto=format&fit=crop&w=200&q=80', rating: 4.6 },
+    { id: 23, name: 'Strawberries (200g)', price: 4.50, category: 'fresh', image: 'https://images.unsplash.com/photo-1587393853556-269c440a3c3c?auto=format&fit=crop&w=200&q=80', rating: 4.7 },
+    { id: 24, name: 'Grapes (1kg)', price: 5.99, category: 'fresh', image: 'https://images.unsplash.com/photo-1585518419759-82c01d40b2c0?auto=format&fit=crop&w=200&q=80', rating: 4.8 },
+    
+    // DAIRY
+    { id: 25, name: 'Milk (2L)', price: 2.00, category: 'dairy', image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=200&q=80', rating: 4.7 },
+    { id: 26, name: 'Yogurt (500g)', price: 2.50, category: 'dairy', image: 'https://images.unsplash.com/photo-1488477181946-85a2bc299e38?auto=format&fit=crop&w=200&q=80', rating: 4.5 },
+    { id: 27, name: 'Cheese (200g)', price: 4.20, category: 'dairy', image: 'https://images.unsplash.com/photo-1452894905112-87cf1f9b809e?auto=format&fit=crop&w=200&q=80', rating: 4.6 },
+    { id: 28, name: 'Butter (200g)', price: 3.80, category: 'dairy', image: 'https://images.unsplash.com/photo-1589985643048-2c029c90d88d?auto=format&fit=crop&w=200&q=80', rating: 4.5 },
+    
+    // STORE BRANDS
+    { id: 29, name: 'Whole Wheat Bread', price: 1.80, category: 'branded', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=200&q=80', rating: 4.4 },
+    { id: 30, name: 'Store Brand Pasta', price: 1.20, category: 'branded', image: 'https://images.unsplash.com/photo-1621996346565-431f63602f41?auto=format&fit=crop&w=200&q=80', rating: 4.3 },
+    { id: 31, name: 'Rice (2kg)', price: 4.50, category: 'branded', image: 'https://images.unsplash.com/photo-1586985289688-cacf312ca2f0?auto=format&fit=crop&w=200&q=80', rating: 4.5 },
+    { id: 32, name: 'Cereal Box', price: 3.20, category: 'branded', image: 'https://images.unsplash.com/photo-1599599810694-b5ac4dd37e83?auto=format&fit=crop&w=200&q=80', rating: 4.4 },
+    
+    // OFFERS
+    { id: 33, name: 'Special Bundle Deal', price: 12.99, category: 'offers', image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=200&q=80', rating: 4.8 },
+    { id: 34, name: 'Organic Mix Pack', price: 9.99, category: 'offers', image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=200&q=80', rating: 4.7 },
+  ];
+
+  // Recipe data
+  const recipes = [
+    {
+      id: 1,
+      title: 'Cilantro Chicken',
+      prep: '20 min',
+      serves: 2,
+      difficulty: 'Easy',
+      image: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&w=400&q=80',
+      description: 'Juicy herb-marinated chicken with fresh cilantro sauce',
+      ingredients: ['Chicken Breast (2 fillets)', 'Fresh Cilantro (1 bunch)', 'Lime (2)', 'Garlic (3 cloves)', 'Olive Oil', 'Salt & Pepper'],
+      instructions: ['Marinate chicken in cilantro, lime juice, and garlic for 30 minutes', 'Heat olive oil in a pan over medium-high heat', 'Cook chicken for 6-7 minutes per side until golden', 'Let rest for 5 minutes before serving', 'Serve with lime wedges and fresh cilantro garnish']
+    },
+    {
+      id: 2,
+      title: 'Veggie Power Bowl',
+      prep: '15 min',
+      serves: 1,
+      difficulty: 'Very Easy',
+      image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80',
+      description: 'Nutritious & colorful grain bowl packed with fresh vegetables',
+      ingredients: ['Quinoa (1 cup cooked)', 'Broccoli (1 cup)', 'Carrots (1 shredded)', 'Cherry Tomatoes (1 cup)', 'Chickpeas (1 can)', 'Tahini Dressing (3 tbsp)', 'Spinach (2 cups)'],
+      instructions: ['Cook quinoa according to package directions', 'Steam broccoli until tender-crisp (5 minutes)', 'Arrange quinoa as base in a large bowl', 'Add broccoli, carrots, tomatoes, and chickpeas', 'Top with fresh spinach and tahini dressing', 'Toss gently and serve immediately']
+    },
+    {
+      id: 3,
+      title: 'Baked Citrus Salmon',
+      prep: '25 min',
+      serves: 2,
+      difficulty: 'Easy',
+      image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80',
+      description: 'Perfectly baked salmon with fresh citrus flavors',
+      ingredients: ['Salmon Fillets (2 x 150g)', 'Lemon (1)', 'Orange (1)', 'Fresh Dill (2 tbsp)', 'Olive Oil (2 tbsp)', 'Salt & Pepper', 'Asparagus (250g)'],
+      instructions: ['Preheat oven to 200°C', 'Place salmon on parchment paper, season with salt & pepper', 'Slice citrus and layer on top with fresh dill', 'Drizzle with olive oil and bake for 15-18 minutes', 'Roast asparagus separately for 12-15 minutes', 'Serve salmon and asparagus together']
+    },
+    {
+      id: 4,
+      title: 'Pasta Primavera',
+      prep: '20 min',
+      serves: 2,
+      difficulty: 'Easy',
+      image: 'https://images.unsplash.com/photo-1621996346565-431f63602f41?auto=format&fit=crop&w=400&q=80',
+      description: 'Light and fresh pasta with seasonal vegetables',
+      ingredients: ['Pasta (250g)', 'Zucchini (1)', 'Bell Pepper (1)', 'Cherry Tomatoes (1 cup)', 'Garlic (2 cloves)', 'Olive Oil (3 tbsp)', 'Parmesan (50g)', 'Fresh Basil'],
+      instructions: ['Cook pasta according to package directions, drain', 'Heat olive oil and sauté garlic until fragrant', 'Add sliced zucchini and bell pepper, cook 5 minutes', 'Add tomatoes and cook until softened (3 minutes)', 'Toss pasta with vegetables, top with parmesan', 'Garnish with fresh basil and serve']
+    },
+    {
+      id: 5,
+      title: 'Berry Smoothie Bowl',
+      prep: '10 min',
+      serves: 1,
+      difficulty: 'Very Easy',
+      image: 'https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=400&q=80',
+      description: 'Breakfast favorite loaded with antioxidants',
+      ingredients: ['Mixed Berries (1.5 cups frozen)', 'Yogurt (1 cup)', 'Milk (1/2 cup)', 'Granola (1/4 cup)', 'Honey (2 tbsp)', 'Coconut Flakes (2 tbsp)', 'Fresh Berries (1/4 cup)'],
+      instructions: ['Blend frozen berries, yogurt, and milk until smooth', 'Pour into a bowl', 'Top with granola, coconut flakes, and fresh berries', 'Drizzle with honey', 'Serve immediately with a spoon']
+    },
+    {
+      id: 6,
+      title: 'Stir Fry Vegetables',
+      prep: '15 min',
+      serves: 2,
+      difficulty: 'Easy',
+      image: 'https://images.unsplash.com/photo-1609501676725-7186f017a4b0?auto=format&fit=crop&w=400&q=80',
+      description: 'Quick and colorful stir fry with Asian flavors',
+      ingredients: ['Mixed Vegetables (3 cups)', 'Soy Sauce (3 tbsp)', 'Garlic (3 cloves)', 'Ginger (1 tbsp)', 'Sesame Oil (1 tbsp)', 'Vegetable Oil (2 tbsp)', 'Sesame Seeds (1 tbsp)', 'Rice (cooked, 2 cups)'],
+      instructions: ['Heat vegetable oil in a wok over high heat', 'Add garlic and ginger, stir for 30 seconds', 'Add vegetables and stir-fry for 5-7 minutes', 'Add soy sauce and sesame oil, mix well', 'Sprinkle with sesame seeds', 'Serve over cooked rice']
+    }
+  ];
+
+  let filteredProducts = [...products];
+  let currentRecipe = null;
+
+  // Toast notification function
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'slideInRight 0.4s ease reverse';
+      setTimeout(() => toast.remove(), 400);
+    }, 3000);
+  }
+
+  // Page navigation
+  function showPage(pageName) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(pageName).classList.add('active');
+    document.querySelector(`button[onclick="showPage('${pageName}')"]`).classList.add('active');
+    window.scrollTo(0, 0);
+    
+    if (pageName === 'shop') renderProducts();
+    if (pageName === 'recipes') renderRecipes();
+  }
+
+  // Product functions
+  function renderProducts() {
+    const grid = document.getElementById('productsGrid');
+    grid.innerHTML = '';
+    filteredProducts.forEach(product => {
+      const productEl = document.createElement('div');
+      productEl.className = 'product';
+      const discountBadge = product.discount ? `<div style="position: absolute; top: 10px; right: 10px; background: #e84342; color: #fff; padding: 0.3em 0.6em; border-radius: 0.3em; font-weight: 700; font-size: 0.9em;">${product.discount} OFF</div>` : '';
+      productEl.innerHTML = `
+        <div style="position: relative;">
+          <img src="${product.image}" alt="${product.name}" class="product-img">
+          ${discountBadge}
+        </div>
+        <div class="product-info">
+          <h3 class="product-title" style="margin: 0 0 0.5em 0;">${product.name}</h3>
+          <div class="product-price">£${product.price.toFixed(2)}</div>
+          <div style="color: #ffa500; margin: 0.5em 0;">⭐ ${product.rating}</div>
+          <button class="cta cta-full" onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+        </div>
+      `;
+      grid.appendChild(productEl);
+    });
+  }
+
+  function filterProducts(category) {
+    if (category === 'all') {
+      filteredProducts = [...products];
+    } else {
+      filteredProducts = products.filter(p => p.category === category);
+    }
+    renderProducts();
+  }
+
+  function filterCategory(category) {
+    setTimeout(() => filterProducts(category), 100);
+  }
+
+  function searchProducts() {
+    const query = document.getElementById('searchBox').value.toLowerCase();
+    filteredProducts = products.filter(p => p.name.toLowerCase().includes(query));
+    renderProducts();
+  }
+
+  function addToCart(productName, price) {
+    const product = products.find(p => p.name === productName);
+    if (product) {
+      const existingItem = cart.find(item => item.name === productName);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({ name: productName, price: price || product.price, quantity: 1 });
+      }
+      updateCartUI();
+      showToast(`✅ "${productName}" added to cart!`);
+    }
+  }
+
+  function removeFromCart(productName) {
+    cart = cart.filter(item => item.name !== productName);
+    updateCartUI();
+  }
+
+  function updateCartUI() {
+    document.getElementById('cartCount').textContent = cart.length;
+    const cartItemsDiv = document.getElementById('cartItems');
+    
+    if (cart.length === 0) {
+      cartItemsDiv.innerHTML = '<div class="cart-empty">Your cart is empty. Start shopping!</div>';
+      document.getElementById('cartTotalAmount').textContent = '£0.00';
+    } else {
+      let html = '';
+      let total = 0;
+      cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        html += `
+          <div class="cart-item">
+            <div class="cart-item-info">
+              <div class="cart-item-name">${item.name}</div>
+              <div style="font-size: 0.9em; color: #666;">Qty: ${item.quantity}</div>
+              <div class="cart-item-price">£${itemTotal.toFixed(2)}</div>
+            </div>
+            <button class="remove-btn" onclick="removeFromCart('${item.name}')">Remove</button>
+          </div>
+        `;
+      });
+      cartItemsDiv.innerHTML = html;
+      document.getElementById('cartTotalAmount').textContent = '£' + total.toFixed(2);
+    }
+  }
+
+  function toggleCart() {
+    document.getElementById('cartModal').classList.toggle('active');
+  }
+
+  function checkout() {
+    if (cart.length === 0) {
+      showToast('🛒 Your cart is empty!');
+      return;
+    }
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
+    showToast(`✅ Order Placed! Total: £${total}`);
+    cart = [];
+    updateCartUI();
+    setTimeout(() => toggleCart(), 1500);
+  }
+  function renderRecipes() {
+    const grid = document.getElementById('recipeGrid');
+    grid.innerHTML = '';
+    recipes.forEach(recipe => {
+      const card = document.createElement('div');
+      card.className = 'recipe-card';
+      card.onclick = () => showRecipe(recipe.id);
+      card.innerHTML = `
+        <img src="${recipe.image}" alt="${recipe.title}" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title" style="margin: 0 0 0.5em 0;">${recipe.title}</h3>
+          <div class="recipe-meta">
+            <span>⏱️ ${recipe.prep}</span>
+            <span>👥 Serves ${recipe.serves}</span>
+            <span>${recipe.difficulty}</span>
+          </div>
+          <p style="color: #555; margin: 1em 0;">${recipe.description}</p>
+          <button class="cta cta-full" onclick="event.stopPropagation(); showRecipe(${recipe.id})">View Recipe</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function showRecipe(id) {
+    currentRecipe = recipes.find(r => r.id === id);
+    if (!currentRecipe) return;
+
+    document.getElementById('detailImg').src = currentRecipe.image;
+    document.getElementById('detailTitle').textContent = currentRecipe.title;
+    
+    const ingredientsList = document.getElementById('detailIngredients');
+    ingredientsList.innerHTML = '';
+    currentRecipe.ingredients.forEach(ing => {
+      const li = document.createElement('li');
+      li.textContent = ing;
+      ingredientsList.appendChild(li);
+    });
+
+    const instructionsList = document.getElementById('detailInstructions');
+    instructionsList.innerHTML = '';
+    currentRecipe.instructions.forEach(inst => {
+      const li = document.createElement('li');
+      li.textContent = inst;
+      instructionsList.appendChild(li);
+    });
+
+    document.getElementById('recipeDetail').classList.add('active');
+    document.getElementById('recipeGrid').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function closeRecipe() {
+    document.getElementById('recipeDetail').classList.remove('active');
+    currentRecipe = null;
+  }
+
+  function addIngredientsToCart() {
+    if (currentRecipe) {
+      showToast(`👨‍🍳 "${currentRecipe.title}" ingredients added to cart!`);
+    }
+  }
+
+  // Initial load
+  renderProducts();
+  renderRecipes();
+</script>
+</body>
+</html>
